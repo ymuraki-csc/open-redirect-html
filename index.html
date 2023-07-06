@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Open Redirect Demo</title>
+    <script defer>
+        const u = new URL(location.href)
+        const searchParams = u.searchParams;
+        document.addEventListener("DOMContentLoaded", () => {
+            if (searchParams.has("redirect_to")) {
+                const redirectTo = searchParams.get("redirect_to");
+                if (confirm("Redirecting:" + redirectTo)) {
+                    location.href = redirectTo
+                }
+            }
+
+            document.querySelector("input").addEventListener('input', (e) => {
+                const value = e.currentTarget.value
+                const a = document.querySelector("a")
+                if (value) {
+                    const newUrl = new URL(location.href)
+                    newUrl.searchParams.append("redirect_to", value)
+                    a.href = newUrl.toString()
+                } else {
+                    a.removeAttribute("href")
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <label>
+        Redirect to:
+        <input type="text" />
+    </label>
+    <div>
+        <a>open</a>
+    </div>
+</body>
+</html>
